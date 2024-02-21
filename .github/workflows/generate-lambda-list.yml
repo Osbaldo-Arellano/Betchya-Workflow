@@ -1,0 +1,44 @@
+name: Generate Lambda List File
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  generate-lambda-list:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Create Artifact Name
+        id: artifact-name
+        run: echo "ARTIFACT_NAME=artifact-PR${{ github.event.pull_request.number }}" >> $GITHUB_ENV
+
+      - name: Detect and list modified functions
+        run: |
+          git fetch origin main
+          changed_dirs=$(git diff --name-only origin/main HEAD | grep '^lambdas/' | awk -F'/' '{print $2}' | uniq)
+          echo "$changed_dirs" > ${{ env.ARTIFACT_NAME }}.txt
+          cat ${{ env.ARTIFACT_NAME }}.txt
+
+      - name: Upload lambda list as an artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.ARTIFACT_NAME }}
+          path: ${{ env.ARTIFACT_NAME }}.txt
+
+      - name: Set up AWS CLI
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: us-west-1
+
+      - name: Upload to S3
+        run: |
+          aws s3 cp ${{ env.ARTIFACT_NAME }}.txt s3://lambda-change-tracker
