@@ -3,8 +3,9 @@
 ## If this is a new Lambda
 
 Before pushing your code, make sure you make an empty Lambda project through the AWS Console.
-Make sure you use the provided.al2023 runtime, provided.al2 will cause runtime errors!
 You must name your new folder the same as the empty Lambda function you just created.
+Make sure you use the provided.al2023 runtime, provided.al2 will cause runtime errors!
+Also make sure to choose the x86-64 architecture.
 
 ## If you're updating a Lambda
 
