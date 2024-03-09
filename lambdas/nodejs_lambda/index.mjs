@@ -6,7 +6,7 @@ export const handler = function (event, context, callback) {
       "Content-Type": "*/*",
     },
   };
-  var greeter = "World";
+  var greeter = "WORLD";
   if (event.greeter && event.greeter !== "") {
     greeter = event.greeter;
   } else if (event.body && event.body !== "") {
