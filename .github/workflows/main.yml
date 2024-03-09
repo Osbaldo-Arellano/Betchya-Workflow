@@ -61,7 +61,7 @@ jobs:
           do
             if [ -f lambdas/$lambda/package.json ]; then # Check if Nodejs project
               echo "Node.js project detected: $lambda"
-              cd /home/runner/work/lambdas/lambdas/lambdas/$lambda
+              cd "${GITHUB_WORKSPACE}/lambdas/${lambda}"
               npm install
               # If you have a build script defined in package.json
               npm run build --if-present
