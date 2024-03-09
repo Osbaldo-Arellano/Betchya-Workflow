@@ -71,7 +71,7 @@ jobs:
               cd -
             else
               echo "Building and zipping $lambda"
-              cd /home/runner/work/lambdas/lambdas/lambdas/$lambda
+              cd "${GITHUB_WORKSPACE}/lambdas/${lambda}"
               GOOS=linux GOARCH=amd64 go build -o bootstrap
               zip $lambda.zip bootstrap
               cd -
