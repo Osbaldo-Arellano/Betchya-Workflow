@@ -25,7 +25,7 @@ export const handler = function (event, context, callback) {
     event.multiValueHeaders.greeter &&
     event.multiValueHeaders.greeter != ""
   ) {
-    greeter = event.multiValueHeaders.greeter.join(" and ");
+    greeter = event.multiValueHeaders.greeter.join(" AND ");
   } else if (
     event.headers &&
     event.headers.greeter &&
